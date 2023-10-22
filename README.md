@@ -1,13 +1,13 @@
 # go-i18n-sample
 
-## How to run
+## How to run the API server
 
 ```zsh
 cd go-i18n-sample
 go run .
 ```
 
-## How to call the API
+## How to send a request with language specified
 
 ### Japanese
 
