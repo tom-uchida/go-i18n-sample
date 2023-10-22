@@ -10,25 +10,25 @@ import (
 )
 
 func main() {
-	// 言語ファイルを読み込む
+	// Load language file
 	bundle := i18n.NewBundle(language.English)
 	bundle.RegisterUnmarshalFunc("json", json.Unmarshal)
 	bundle.MustLoadMessageFile("locales/ja.json")
 	bundle.MustLoadMessageFile("locales/en.json")
 
 	http.HandleFunc("/greet", func(w http.ResponseWriter, r *http.Request) {
-		// クライアントの言語を検出
+		// Detect client language
 		acceptLang := r.Header.Get("Accept-Language")
 		langMatcher := language.NewMatcher(bundle.LanguageTags())
 		tag, _, _ := langMatcher.Match(language.Make(acceptLang))
 
-		// ローカライズされたメッセージを取得
+		// Get localized message
 		localizer := i18n.NewLocalizer(bundle, tag.String())
 		greeting := localizer.MustLocalize(&i18n.LocalizeConfig{
 			MessageID: "greeting",
 		})
 
-		// ローカライズされたメッセージをクライアントに送信
+		// Return localized message to client
 		fmt.Fprintf(w, "%v\n", greeting)
 	})
 
